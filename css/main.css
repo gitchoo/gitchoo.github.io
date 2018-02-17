@@ -16,13 +16,138 @@ h1.fancy {
   position: relative;
   width: 100%;
   height: 100%; }
+  .panel .inner {
+    width: 100%;
+    max-width: 700px;
+    position: absolute;
+    bottom: 10%;
+    left: 10%; }
+    .panel .inner .blob {
+      margin: 10px 0;
+      line-height: 25px; }
 
-#ct-welcome .inner {
-  width: 100%;
-  max-width: 700px;
-  position: absolute;
-  bottom: 10%;
-  left: 10%; }
-  #ct-welcome .inner .blob {
-    margin: 10px 0;
-    line-height: 25px; }
+.panel[data-section="techscape"] .canvas {
+  display: flex;
+  margin: 80px auto 0 auto;
+  height: 200px;
+  position: relative;
+  cursor: pointer;
+  perspective: 2000px; }
+  .panel[data-section="techscape"] .canvas .tip {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #272727;
+    background: #fefefe;
+    max-width: 180px;
+    padding: 0 4px;
+    line-height: 12px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-out;
+    -moz-transition: opacity 0.5s ease-out;
+    transition: opacity 0.5s ease-out;
+    position: absolute;
+    font-size: 10px;
+    text-align: center;
+    margin-top: -40px;
+    white-space: nowrap;
+    z-index: 1; }
+  .panel[data-section="techscape"] .canvas .item {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    opacity: 0;
+    transform-origin: 0 bottom;
+    -webkit-transition: transform 0.5s ease-out;
+    -moz-transition: transform 0.5s ease-out;
+    transition: transform 0.5s ease-out; }
+    .panel[data-section="techscape"] .canvas .item .inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 25px;
+      width: 100%;
+      height: 0;
+      text-align: center;
+      position: relative;
+      background: #272727;
+      overflow: visible !important;
+      -webkit-transition: background 0.5s ease-out;
+      -moz-transition: background 0.5s ease-out;
+      transition: background 0.5s ease-out;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -ms-border-radius: 8px;
+      border-radius: 8px;
+      border-color: #fff; }
+    .panel[data-section="techscape"] .canvas .item .inner:before {
+      content: attr(data-value);
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+      top: -20px;
+      width: 100%;
+      color: #fff;
+      -webkit-transition: opacity 0.5s ease-out;
+      -moz-transition: opacity 0.5s ease-out;
+      transition: opacity 0.5s ease-out; }
+    .panel[data-section="techscape"] .canvas .item .inner:after {
+      content: "";
+      display: block;
+      width: 1px;
+      width: 0;
+      border-right: 1px solid;
+      border-color: inherit;
+      height: 100%;
+      margin: 0 auto;
+      -webkit-transition: background 0.5s ease-out;
+      -moz-transition: background 0.5s ease-out;
+      transition: background 0.5s ease-out; }
+    .panel[data-section="techscape"] .canvas .item .icon {
+      width: 100%;
+      padding-top: 10px; }
+      .panel[data-section="techscape"] .canvas .item .icon .wrap {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+        background-position: 100% 0;
+        margin: 0 auto; }
+        .panel[data-section="techscape"] .canvas .item .icon .wrap img {
+          opacity: 0;
+          -webkit-transition: opacity 0.5s ease-out;
+          -moz-transition: opacity 0.5s ease-out;
+          transition: opacity 0.5s ease-out; }
+  .panel[data-section="techscape"] .canvas .item:hover .tip {
+    opacity: 1;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none; }
+  .panel[data-section="techscape"] .canvas .item:hover .icon .wrap {
+    background: transparent; }
+  .panel[data-section="techscape"] .canvas .item:hover .icon img {
+    opacity: 1;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none; }
+  .panel[data-section="techscape"] .canvas .item:hover .inner {
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none; }
+  .panel[data-section="techscape"] .canvas .item:hover .inner:before {
+    opacity: 1;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none; }
+  .panel[data-section="techscape"] .canvas .item:hover .inner:after {
+    background: #fefefe;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none; }

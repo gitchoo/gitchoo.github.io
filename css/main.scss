@@ -1,3 +1,47 @@
+$foreground:#272727;
+$background:#fefefe;
+$accent:#fff;
+
+@mixin box-sizing($m){
+	-webkit-box-sizing: $m;
+	-moz-box-sizing: $m;
+	box-sizing: $m;
+}
+
+@mixin border-radius($r){
+	-webkit-border-radius: $r;
+	-moz-border-radius: $r;
+	-ms-border-radius: $r;
+	border-radius: $r;
+}
+
+@mixin no-select(){
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+@mixin transition($a...){
+	-webkit-transition:$a;
+	-moz-transition:$a;
+	transition:$a;
+}
+
+@mixin transition-delay($d){
+	-webkit-transition-delay:$d;
+	-moz-transition-delay:$d;
+	transition-delay:$d;
+}
+
+@mixin transform($d){
+	-webkit-transform:$d;
+	-moz-transform:$d;
+	transform:$d;
+}
+
 html, body{
 	font-family: 'Quicksand', sans-serif;
 	margin:0;
@@ -18,9 +62,7 @@ h1.fancy{
 	position:relative;
 	width: 100%;
 	height: 100%;
-}
 
-#ct-welcome {
 	.inner{
 		width:100%;
 		max-width:700px;
@@ -33,4 +75,155 @@ h1.fancy{
 			line-height: 25px;
 		}
 	}
+}
+
+#ct-welcome {
+	.inner{
+		
+		
+	}
+}
+
+
+.panel[data-section="techscape"]{
+
+	.canvas{
+		display:flex;
+		margin:80px auto 0 auto;
+		height:200px;
+		position:relative;
+		cursor: pointer;
+		perspective: 2000px;
+
+		.tip{
+			@include border-radius(4px);
+			border:1px solid $foreground;
+			background:$background;
+			max-width:180px;
+			padding:0 4px;
+			line-height:12px;
+			@include box-sizing(border-box);
+			opacity:0;
+			@include transition(opacity 0.5s ease-out);
+			position: absolute;
+			font-size: 10px;
+			text-align: center;
+			margin-top: -40px;
+			white-space: nowrap;
+			z-index: 1;
+		}
+
+		.item{
+			flex:1 1 auto;
+			display: flex;
+			flex-direction:column;
+			justify-content: flex-end;
+			align-items: center;
+			position:relative;
+			opacity: 0;
+			transform-origin: 0 bottom;
+			@include transition(transform 0.5s ease-out);
+
+			.inner{
+				display:flex;
+				flex-direction:column;
+				align-items: center;
+				max-width:25px;
+				width:100%;
+				height:0;
+				text-align: center;
+				position: relative;
+				background:$foreground;
+				overflow: visible !important;
+				@include transition(background 0.5s ease-out);
+				@include border-radius(8px);
+				border-color:$accent;
+				
+			}
+
+			.inner:before{
+				content:attr(data-value);
+				font-size:11px;
+				font-weight:bold;
+				position:absolute;
+				top:-20px;
+				width:100%;
+				color:$accent;
+				@include transition(opacity 0.5s ease-out);
+			}
+
+			.inner.ready:before{
+				//opacity:0;
+			}
+
+			.inner:after{
+				content:"";
+				display:block;
+				width:1px;
+				width:0;
+				border-right:1px solid;
+				border-color:inherit;
+				height:100%;
+				margin:0 auto;
+				@include transition(background 0.5s ease-out);
+			}
+
+			.icon{
+				width:100%;
+				padding-top:10px;
+
+				.wrap{
+					position:relative;
+					width:30px;
+					height:30px;
+					overflow: hidden;
+					background-position:100% 0;
+					margin:0 auto;
+
+					img{
+						opacity:0;
+						@include transition(opacity 0.5s ease-out);
+					}
+				}
+			}
+		}
+
+		.item:hover{
+			//@include transition(transform .25s ease-out);
+			//@include transform(translateZ(100px));
+
+			.tip{
+				//display:block;
+				opacity:1;
+				@include transition(none);
+			}
+
+			.icon{
+				.wrap{
+					background: transparent;
+				}
+
+				img{
+					opacity: 1;
+					@include transition(none);
+				}
+			}
+
+			.inner{
+				@include transition(none);
+			}
+
+			.inner:before{
+				opacity:1;
+				@include transition(none);
+			}
+
+			.inner:after{
+				background:$background;
+				@include transition(none);
+			}
+		}
+
+	}
+
 }
