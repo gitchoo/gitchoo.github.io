@@ -92,7 +92,7 @@ function createTechscape(){
 		{ label:'MySQL', icon:'mysql', color:'F9954D', rating:7 },
 		{ label:'PHP', icon:'php', color:'627DBE', rating:6 },
 		{ label:'JS', icon:'js', color:'83BD37', rating:9 },
-		{ label:'HTML', icon:'html', color:'E44D26', rating:9 },
+		{ label:'HTML', icon:'html', color:'E44D26', rating:10 },
 		{ label:'CSS', icon:'css', color:'1F72B5', rating:9 },
 		{ label:'SASS3 (SCSS)', icon:'sass', color:'8CC84B', rating:8 },
 		{ label:'Windows IIS', icon:'windows', color:'0078D6', rating:7 },

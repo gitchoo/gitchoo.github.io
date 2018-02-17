@@ -63,7 +63,7 @@ h1.fancy{
 	width: 100%;
 	height: 100%;
 
-	.inner{
+	> .inner{
 		width:100%;
 		max-width:700px;
 		position:absolute;
@@ -89,7 +89,7 @@ h1.fancy{
 
 	.canvas{
 		display:flex;
-		margin:80px auto 0 auto;
+		margin:80px auto 60px auto;
 		height:200px;
 		position:relative;
 		cursor: pointer;
@@ -148,7 +148,6 @@ h1.fancy{
 				position:absolute;
 				top:-20px;
 				width:100%;
-				color:$accent;
 				@include transition(opacity 0.5s ease-out);
 			}
 
@@ -170,7 +169,8 @@ h1.fancy{
 
 			.icon{
 				width:100%;
-				padding-top:10px;
+				position:absolute;
+				bottom:-50px;
 
 				.wrap{
 					position:relative;
