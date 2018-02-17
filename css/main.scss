@@ -12,8 +12,10 @@ h1.fancy{
 
 .panel{
 	position:relative;
+}
 
-	#ct-welcome {
+#ct-welcome {
+	.inner{
 		width:100%;
 		max-width:500px;
 		position:absolute;
