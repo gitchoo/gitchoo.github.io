@@ -1,0 +1,227 @@
+<html>
+<head>
+	<title></title>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script>
+		var sing = false;
+		var imgDims = { width:500, height:500 };
+		function rnd(min, max){
+			return Math.floor(Math.random()*(max-min+1)+min);
+		}
+
+		function doSplatterReveal(e){
+			//var obj = $(e.target);
+			var obj = e;
+			//var d = new Array('','','','','');
+			var d = new Array('','','');
+			var pad_x = imgDims.width * 0.1;
+			var pad_y = imgDims.height * 0.1;
+			obj.html('');
+
+			for(var i = 0; i < 5; i++){
+				var s = $($.parseHTML('<div>'));
+				var sy = rnd(pad_y, imgDims.height - pad_y);
+				var sx = rnd(pad_x, imgDims.width - pad_x);
+				var sfs = rnd(1,10);
+				s.addClass('splat');
+				s.css({ 
+					top: sy, 
+					left: sx, 
+					'font-size':sfs,
+					'background-image':'url(' + obj.attr('data-image-uri') + ')'
+				});
+
+				if (i == 0){
+					s.one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){ 
+						var obj = $(this).parent();
+						obj.css({ 'background-image' : 'url('  + obj.attr('data-image-uri') + ')' });
+						//obj.css({ 'background-color' : '#ff0' });
+						obj.find('.splat').remove();
+						moveBack();
+					});
+				}
+
+				s.text(d[rnd(0,2)]);
+				obj.append(s);
+			}
+
+		}
+
+		$(function(){ 
+			$('[data-action="goNext"]').click(moveBack); 
+			initSplatObjects();
+		});
+
+		var _dist = 1000;
+		var _rot = false;
+		var _rotTheta = false;
+		var i = 1;
+
+		function initSplatObjects(){
+			_rot = false;
+			_rotTheta = true;
+
+			$('.splat').remove();
+			i = 1;
+
+			var c = $('.splatter-obj').length;
+			$('.splatter-obj').each(function(i){
+				var z = (c - i) * _dist;
+				$(this).css({ 'background-image':'', 'transform':'translateZ(' + (0 - z) + 'px)'});
+			});
+
+			var z = (c * _dist) + _dist;
+			$('.inner').attr('data-depth', z).css({ 'transition':'none', 'transform':'translateZ(' + z + 'px)'})
+		}
+
+		function moveBack(){
+			if (sing) return;
+			
+			if (i == 1){
+				var aud = $('#hero-music').get(0);
+				aud.pause();
+				aud.currentTime = 0;
+				aud.play();
+			}
+
+			z  = $('.inner').attr('data-depth');
+			z -= _dist;
+			$('.inner').attr('data-depth', z);
+
+			if (z <= -0){
+				initSplatObjects();
+				sing = true;
+				return;
+			}
+			$('.inner').css({ 'transition':'' });
+
+			if (i == $('.splatter-obj').length) _rot = false;
+
+			if (_rot){
+				$('.inner').css({ 'transform':'translateZ(' + z + 'px) rotateZ(' + (_rotTheta ? '10deg' : '-10deg') + ')' });
+				_rotTheta = !_rotTheta;
+			} else {
+				$('.inner').css({ 'transform':'translateZ(' + z + 'px)' });
+			}
+
+			_rot = !_rot;
+			setTimeout(function(){ doSplatterReveal($('.slide:nth-of-type(' + i + ')')); i++; }, 250);
+		}
+	</script>
+
+	<style>
+		@font-face {
+			font-family: 'splats';
+			src:
+			url('fonts/splats.ttf?ajxaf0') format('truetype'),
+			url('fonts/splats.woff?ajxaf0') format('woff'),
+			url('fonts/splats.svg?ajxaf0#splats') format('svg');
+			font-weight: normal; 
+			font-style: normal;
+		}
+
+		html,body{
+			width:100%;
+			height:100%;
+			padding:0;
+			margin:0;
+			background: #0f0f0f;
+		}
+
+		.outer-wrap{
+			width:100%;
+			height:100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+
+		.slideshow{
+			position: relative;
+			perspective: 700px;
+			perspective-origin: 50% 50%;
+			width:600px;
+			height:600px;
+			
+		}
+
+		.inner{
+			position: absolute;
+			top:0;
+			left:0;
+			backface-visibility: visible;
+			transform-style: preserve-3d;
+			transition:all 2.5s ease-out;
+			width:100%;
+			height:100%;
+		}
+
+
+		.splatter-obj{
+			position: absolute;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+		}
+
+		.splat{
+			font-family:'splats';
+			pointer-events: none;
+			position:absolute;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center;
+			
+			animation: splat 2s ease-in-out forwards;
+			margin:0;
+
+			color:transparent;
+			-webkit-background-clip:text;
+			-moz-background-clip:text;
+			background-clip:text;
+			-webkit-text-fill-color:transparent;
+
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently */
+		}
+
+		@keyframes splat{
+			100%{
+				font-size:1000px;
+				margin:-500px 0 0 -500px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<button data-action="goNext">Advance</button>
+	<div class="outer-wrap">
+		<div class="slideshow">
+			<div class="inner">
+				<div class="slide splatter-obj" data-image-uri="images/test/hulk.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/ironman.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/doctor-strange.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/thor.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/starlord.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/black-widow.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/black-panther.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/ant-man.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/captain-america.png"></div>
+			</div>
+		</div>
+	</div>
+
+	<audio id="hero-music" preload>
+		<source src="hero.mp3" type="audio/mpeg">
+	</audio>
+</body>
+</html>
