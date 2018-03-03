@@ -26,8 +26,7 @@ h1.fancy {
       line-height: 25px; }
 
 #ct-welcome {
-  background: url(/images/site/panel-01.jpg) no-repeat center center;
-  background-size: cover; }
+  background: #f9f9f9 url(/images/site/panel-01.jpg) no-repeat center center; }
 
 .panel[data-section="techscape"] .canvas {
   display: flex;
