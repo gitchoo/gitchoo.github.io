@@ -25,6 +25,10 @@ h1.fancy {
       margin: 10px 0;
       line-height: 25px; }
 
+#ct-welcome {
+  background: url(/images/site/panel-01.jpg) no-repeat center center;
+  background-size: cover; }
+
 .panel[data-section="techscape"] .canvas {
   display: flex;
   margin: 80px auto 60px auto;
