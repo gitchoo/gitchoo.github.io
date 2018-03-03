@@ -51,11 +51,11 @@ html, body{
 }
 
 h1.fancy{
-	font-family: 'Yesteryear', cursive;
+	//font-family: 'Yesteryear', cursive;
 	font-size: 100px;
 	font-weight: 100;
 	line-height: 100px;
-	margin: 0;
+	margin: 0 0 0 -8px;
 }
 
 .panel{
@@ -79,8 +79,6 @@ h1.fancy{
 
 #ct-welcome {
 	.inner{
-		
-		
 	}
 }
 
