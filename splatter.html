@@ -37,7 +37,7 @@
 						obj.css({ 'background-image' : 'url('  + obj.attr('data-image-uri') + ')' });
 						//obj.css({ 'background-color' : '#ff0' });
 						obj.find('.splat').remove();
-						moveBack();
+						//moveBack();
 					});
 				}
 
@@ -75,8 +75,8 @@
 		}
 
 		function moveBack(){
-			if (sing) return;
-			
+			//if (sing) return;
+
 			if (i == 1){
 				var aud = $('#hero-music').get(0);
 				aud.pause();
@@ -90,7 +90,7 @@
 
 			if (z <= -0){
 				initSplatObjects();
-				sing = true;
+				//sing = true;
 				return;
 			}
 			$('.inner').css({ 'transition':'' });
