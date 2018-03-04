@@ -13,7 +13,8 @@
 			//var obj = $(e.target);
 			var obj = e;
 			//var d = new Array('','','','','');
-			var d = new Array('','','');
+			//var d = new Array('','','');
+			var d = new Array('','');
 			var pad_x = imgDims.width * 0.1;
 			var pad_y = imgDims.height * 0.1;
 			obj.html('');
@@ -41,8 +42,9 @@
 					});
 				}
 
-				s.text(d[rnd(0,2)]);
+				s.text(d[rnd(0,d.length - 1)]);
 				obj.append(s);
+				obj.addClass('set');
 			}
 
 		}
@@ -63,7 +65,7 @@
 				if (_preloadDone) return;
 				_preloadDone = true;
 				console.log("!");
-				setTimeout(function(){ moveBack(); }, 2000);
+				moveBack();
 			}
 		}
 
