@@ -37,7 +37,7 @@
 						obj.css({ 'background-image' : 'url('  + obj.attr('data-image-uri') + ')' });
 						//obj.css({ 'background-color' : '#ff0' });
 						obj.find('.splat').remove();
-						//moveBack();
+						moveBack();
 					});
 				}
 
@@ -49,8 +49,23 @@
 
 		$(function(){ 
 			$('[data-action="goNext"]').click(moveBack); 
+			$('.splatter-obj').each(function(i){
+				$('<img/>').load(checkPreload).attr('src', $(this).attr('data-image-uri'));
+			});
 			initSplatObjects();
 		});
+
+		var _imgsLoaded = 0;
+		var _preloadDone = false;
+		function checkPreload(){
+			_imgsLoaded++;
+			if (_imgsLoaded => $('.splatter-obj').length) {
+				if (_preloadDone) return;
+				_preloadDone = true;
+				console.log("!");
+				moveBack();
+			}
+		}
 
 		var _dist = 1000;
 		var _rot = false;
@@ -59,7 +74,7 @@
 
 		function initSplatObjects(){
 			_rot = false;
-			_rotTheta = true;
+			_rotTheta = false;
 
 			$('.splat').remove();
 			i = 1;
@@ -75,7 +90,7 @@
 		}
 
 		function moveBack(){
-			//if (sing) return;
+			if (sing) return;
 
 			if (i == 1){
 				var aud = $('#hero-music').get(0);
@@ -89,15 +104,20 @@
 			$('.inner').attr('data-depth', z);
 
 			if (z <= -0){
-				initSplatObjects();
-				//sing = true;
+				//initSplatObjects();
+				sing = true;
+				$('.inner').css({
+					'transform':'translateZ(' + (($('.splatter-obj').length * _dist) + _dist) + 'px)'
+				});
 				return;
 			}
 			$('.inner').css({ 'transition':'' });
 
 			if (i == $('.splatter-obj').length) _rot = false;
 
+			_rot = false;
 			if (_rot){
+				//$('.inner').css({ 'transform':'translateZ(' + z + 'px) rotateX(' + (_rotTheta ? '0.5deg' : '-0.5deg') + ') rotateZ(' + (_rotTheta ? '5deg' : '-5deg') + ')' });
 				$('.inner').css({ 'transform':'translateZ(' + z + 'px) rotateZ(' + (_rotTheta ? '10deg' : '-10deg') + ')' });
 				_rotTheta = !_rotTheta;
 			} else {
@@ -120,12 +140,19 @@
 			font-style: normal;
 		}
 
+		button{
+			position: fixed;
+			display: none;
+			top:0;
+			left:0;
+		}
+
 		html,body{
 			width:100%;
 			height:100%;
 			padding:0;
 			margin:0;
-			background: #0f0f0f;
+			background: #090909;
 		}
 
 		.outer-wrap{
@@ -216,6 +243,9 @@
 				<div class="slide splatter-obj" data-image-uri="images/test/black-panther.png"></div>
 				<div class="slide splatter-obj" data-image-uri="images/test/ant-man.png"></div>
 				<div class="slide splatter-obj" data-image-uri="images/test/captain-america.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title1.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title2.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title3.png"></div>
 			</div>
 		</div>
 	</div>
