@@ -1,0 +1,233 @@
+<html>
+<head>
+	<title></title>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script>
+		var clsSplatterSlider = function(){
+			var _config = { width:500, height:500, dist:1000, fadeOffset:1.65, maxSplatSize:800, steps:6 };
+			var _mouse = { isDown:false, dx:null, dy:null, x:null, y:null };
+
+			var _stepSize = window.innerHeight / _config.steps;
+			var _curSlide = 1;
+
+			this.init = function(){
+				createSlides();
+				$(window).bind('mousedown', evtMouseDown);
+				$(window).bind('mouseup', evtMouseUp);
+			}
+
+			function rnd(min, max){
+				return Math.floor(Math.random()*(max-min+1)+min);
+			}
+
+			function createSlides(){
+				var d = new Array('','');
+				var pad_x = _config.width * 0.2;
+				var pad_y = _config.height * 0.2;
+
+				var c = $('.slide.splatter-obj').length;
+
+				$('.slide.splatter-obj').each(function(i){
+					var obj = $(this);
+					obj.attr('data-step', 1);
+
+					for(var j = 0; j < _config.steps; j++){
+						var s = $($.parseHTML('<div>'));
+						var sfs = rnd(1,10);
+						s.addClass('splat');
+						s.text(d[rnd(0,d.length - 1)]);
+						s.attr('data-original-fs', sfs);
+
+						//if (rnd(0,3) == 0) s.attr('data-tw-opacity','1');
+
+						s.css({ 
+							top: rnd(pad_y, _config.height - pad_y), 
+							left: rnd(pad_x, _config.width - pad_x), 
+							'font-size':sfs,
+							'background-image':'url(' + obj.attr('data-image-uri') + ')'
+						});
+						obj.append(s);
+					}
+
+					var z = (c - i) * _config.dist;
+					$(this).css({ 'background-image':'', 'transform':'translateZ(' + (0 - z) + 'px)'});
+				});
+
+				var z = (c * _config.dist) + _config.dist;
+				$('.train').attr('data-depth', z).css({ 'transform':'translateZ(' + z + 'px)'});
+			}
+
+			function progressSlide(slide, p){
+				var obj = $('.slide.splatter-obj:nth-child(' + slide + ')');
+				obj.find('.splat').each(function(){
+					var ofs = Number($(this).attr('data-original-fs'))
+					var fs = Math.round(((_config.maxSplatSize - ofs) / 100) * p) + ofs;
+					var m = Math.round(fs / 2);
+					$(this).css({
+						'font-size':fs,
+						'opacity': $(this).attr('data-tw-opacity') == '1' ? (p / 100) : '',
+						'margin': '-' + m + 'px 0 0 -' + m + 'px'
+					})
+				})
+			}
+
+			function evtMouseDown(e){
+				_mouse.isDown = true;
+				_mouse.dx = e.originalEvent.clientX;
+				_mouse.dy = e.originalEvent.clientY;
+				$(window).bind('mousemove', evtMouseMove);
+			}
+
+			function evtMouseUp(e){
+				_mouse.isDown = false;
+				$(window).unbind('mousemove', evtMouseMove);
+				doMovement(e, true);
+			}
+
+			function evtMouseMove(e){
+				doMovement(e, false);
+			}
+
+			function doMovement(e, save){
+				_mouse.x = e.originalEvent.clientX;
+				_mouse.y = e.originalEvent.clientY;
+				
+				var dist = (_mouse.dy - _mouse.y) * 2;
+				
+				var train = $('.train');
+				var z = Number(train.attr('data-depth')) + dist;
+				train.css({
+					'transform':'translateZ(' + (z) + 'px)'
+				});
+
+				var slideCount  = $('.slide.splatter-obj').length;
+				var maxLen = (slideCount * _config.dist) + (_config.dist * _config.fadeOffset);
+				var p = (maxLen - z) / _config.dist;
+				var index = Math.floor(p);
+				p = (p - index) * 100;
+
+				progressSlide(index, p);
+
+				if (save){
+					train.attr('data-depth', z);
+				}
+			}
+		}
+	</script>
+
+	<script>
+		var splatterSlider = new clsSplatterSlider();
+		$(function(){
+			splatterSlider.init();
+		});
+	</script>
+
+	<style>
+		@font-face {
+			font-family: 'splats';
+			src:
+				url('fonts/splats.ttf?ajxaf0') format('truetype'),
+				url('fonts/splats.woff?ajxaf0') format('woff'),
+				url('fonts/splats.svg?ajxaf0#splats') format('svg');
+			font-weight: normal; 
+			font-style: normal;
+		}
+
+		html,body{
+			width:100%;
+			height:100%;
+			padding:0;
+			margin:0;
+			background: #090909;
+			color:#fff;
+		}
+
+		.outer-wrap{
+			width:100%;
+			height:100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+
+		.slideshow{
+			position: relative;
+			perspective: 700px;
+			perspective-origin: 50% 50%;
+			width:600px;
+			height:600px;
+		}
+
+		.train{
+			position: absolute;
+			top:0;
+			left:0;
+			transform-style: preserve-3d;
+			width:100%;
+			height:100%;
+		}
+
+		.slide{
+			position: absolute;
+			top:0;
+			left:0;
+			width: 100%;
+			height: 100%;
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently */
+		}
+
+		.splat{
+			font-family:'splats';
+			color:#fff;
+			position: absolute;
+
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center;
+
+			color:transparent;
+			-webkit-background-clip:text;
+			-moz-background-clip:text;
+			background-clip:text;
+			-webkit-text-fill-color:transparent;
+
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently */
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="outer-wrap">
+
+		<div class="slideshow">
+			<div class="train">
+				<div class="slide splatter-obj" data-image-uri="images/test/hulk.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/ironman.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/doctor-strange.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/thor.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/starlord.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/black-widow.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/black-panther.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/ant-man.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/captain-america.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title1.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title2.png"></div>
+				<div class="slide splatter-obj" data-image-uri="images/test/title3.png"></div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>
