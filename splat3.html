@@ -14,8 +14,8 @@
 			this.init = function(){
 				createSlides();
 				_train.obj = $('.train');
-				$(window).bind('mousedown', evtMouseDown);
-				$(window).bind('mouseup', evtMouseUp);
+				$(window).bind('mousedown touchstart', evtMouseDown);
+				$(window).bind('mouseup touchend', evtMouseUp);
 			}
 
 			function rnd(min, max){
@@ -77,7 +77,7 @@
 			function evtMouseDown(e){
 				_mouse.isDown = true;
 				_mouse.dy = e.originalEvent.clientY;
-				$(window).bind('mousemove', evtMouseMove);
+				$(window).bind('mousemove touchmove', evtMouseMove);
 			}
 
 			function evtMouseUp(e){
@@ -87,7 +87,7 @@
 				_mouse.y = e.originalEvent.clientY;
 				_train.targetZ = _train.curZ + (_mouse.dy - _mouse.y);
 				
-				$(window).unbind('mousemove', evtMouseMove);
+				$(window).unbind('mousemove touchmove', evtMouseMove);
 
 				startAnim()
 			}
