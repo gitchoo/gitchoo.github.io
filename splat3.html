@@ -76,7 +76,7 @@
 
 			function evtMouseDown(e){
 				_mouse.isDown = true;
-				_mouse.dy = e.originalEvent.clientY;
+				_mouse.dy = (e.type == "touchstart") ? e.originalEvent.changedTouches["0"].clientY : e.originalEvent.clientY;
 				$(window).bind('mousemove touchmove', evtMouseMove);
 			}
 
@@ -84,7 +84,7 @@
 				_train.curZ = _train.targetZ;
 
 				_mouse.isDown = false;
-				_mouse.y = e.originalEvent.clientY;
+				_mouse.y = (e.type == "touchend") ? e.originalEvent.changedTouches["0"].clientY : e.originalEvent.clientY;
 				_train.targetZ = _train.curZ + (_mouse.dy - _mouse.y);
 				
 				$(window).unbind('mousemove touchmove', evtMouseMove);
@@ -93,7 +93,7 @@
 			}
 
 			function evtMouseMove(e){
-				_mouse.y = e.originalEvent.clientY;
+				_mouse.y = (e.type == "touchmove") ? e.originalEvent.changedTouches["0"].clientY : e.originalEvent.clientY;
 				_train.targetZ = _train.curZ + (_mouse.dy - _mouse.y);
 				doMovement();
 			}
