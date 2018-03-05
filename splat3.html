@@ -95,7 +95,6 @@
 			}
 
 			function evtMouseMove(e){
-				e.preventDefault();
 				_mouse.y = (e.type == "touchmove") ? e.originalEvent.changedTouches["0"].clientY : e.originalEvent.clientY;
 				_train.targetZ = _train.curZ + (_mouse.dy - _mouse.y);
 				doMovement();
